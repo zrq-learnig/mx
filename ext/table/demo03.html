@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo03</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+</head>
+<body>
+<div id="container"></div>
+<script>
+    Ext.create('Ext.grid.Panel', {
+        renderTo: 'container',
+        width: 400, // 设置整个表格的宽
+        height: 500, // 设置整个表格的高
+        border: true, // 表格是否有边框，默认为true
+        plugins: [
+            {
+                ptype: 'cellediting', // 列可编辑
+                clicksToEdit: 1 // 单击1一次进入编辑状态
+            }
+        ],
+        columns: [
+            {text: '姓名', dataIndex: 'name', flex: 1, editor: true}, // 此列可编辑
+            {text: '性别', dataIndex: 'sex', flex: 1}, // flex设置此列的宽度占比为多少，此处写法代表三列等宽占满整个表格的宽
+            {text: '年纪', dataIndex: 'age', flex: 1}
+        ],
+        store: Ext.create('Ext.data.Store', {
+            data: [
+                {name: '张三', sex: '男', age: '23'},
+                {name: '李四', sex: '男', age: '24'},
+                {name: '小红', sex: '女', age: '20'},
+            ]
+        }),
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo02</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+</head>
+<body>
+<div id="container"></div>
+<script>
+    Ext.create('Ext.grid.Panel', {
+        renderTo: 'container',
+        title: '人员信息表', // 表格标题
+        enableColumnHide: true, // 是否支持列可隐藏，默认为true
+        sortableColumns: true, // 是否支持列可排序，默认为true
+        tbar: [ // 表格上方按钮
+            {
+                text: '按钮1', handler: function () {
+                    alert('按钮1被点击了')
+                }
+            },
+            {
+                text: '按钮2', handler: function () {
+                    alert('按钮2被点击了')
+                }
+            }
+        ],
+        bbar: [ // 表格下方按钮
+            {
+                text: '按钮3', handler: function () {
+                    alert('按钮3被点击了')
+                }
+            },
+            {
+                text: '按钮4', handler: function () {
+                    alert('按钮4被点击了')
+                }
+            }
+        ],
+        buttons: [
+            {
+                text: '确定',
+                handler: function () {
+                    alert('确定')
+                }
+            },
+            {
+                text: '取消',
+                handler: function () {
+                    alert('取消')
+                }
+            }
+        ],
+        columns: [
+            {text: '姓名', dataIndex: 'name', align: 'center'}, // align: 列数据的对齐方式
+            {text: '性别', dataIndex: 'sex', sortable: false}, // sortable: false，此列不支持排序
+            {text: '年纪', dataIndex: 'age',
+                renderer: function (val) { // renderer函数支持将表格数据渲染成你想要的任何样式，如：
+                    return '<input style="width: 50px" value="' + val +'"' + '/>'
+                }
+            },
+            {
+                text: '兴趣占比', columns: [ // 多级表头
+                    {text: '篮球', dataIndex: 'hobby1'},
+                    {text: '乒乓球', dataIndex: 'hobby2'}
+                ]
+            },
+            {text: 'id', dataIndex: 'id', hidden: true} // hidden: true，此列默认被隐藏
+        ],
+        store: Ext.create('Ext.data.Store', {
+            data: [
+                {name: '张三', sex: '男', age: '23', hobby1: '30%', hobby2: '70%', id: 1},
+                {name: '李四', sex: '男', age: '24', hobby1: '40%', hobby2: '60%',id: 2},
+                {name: '小红', sex: '女', age: '20', hobby1: '45%', hobby2: '55%',id: 3},
+                {name: '王五', sex: '男', age: '30', hobby1: '80%', hobby2: '20%',id: 4}
+            ]
+        }),
+    })
+</script>
+</body>
+</html>

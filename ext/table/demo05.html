@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo05</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+</head>
+<body>
+<div id="container"></div>
+<script>
+    Ext.create('Ext.grid.Panel', {
+            renderTo: 'container',
+            columns: [
+                {text: '姓名', dataIndex: 'name'},
+                {text: '性别', dataIndex: 'sex'},
+                {text: '年纪', dataIndex: 'age'}
+            ],
+            store: Ext.create('Ext.data.Store', {
+                data: [
+                    {name: '张三', sex: '男', age: '23'},
+                    {name: '李四', sex: '男', age: '24'},
+                    {name: '小红', sex: '女', age: '20'}
+                ]
+            }),
+            listeners: {
+                'itemclick': function (grid, record, itemElement, index, e, eOptions) {
+                    /**
+                     * grid：表格本身，this
+                     * record：表格此行的record对象，数据集合
+                     * itemElement: 此行的element对象，html元素
+                     * index：此行在表格中的索引，从0开始
+                     * e：事件本身，此处指的是ext里的事件对象
+                     * eOption：选项对象，一般不用
+                     */
+
+                    alert('姓名:' + record.get('name')) // 关于record对象的使用，请详见Ext.data.Model
+                },
+                'itemcontextmenu': function (grid, record, itemElement, index, e, eOptions) {
+                    // 参数意义与itemclick相同
+                    e.preventDefault() // 经用浏览器本身的右键事件
+                    alert('行数:' + index)
+                }
+            }
+    })
+</script>
+</body>
+</html>
