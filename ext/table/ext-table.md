@@ -189,9 +189,9 @@ Ext.create('Ext.grid.Panel', {
 
 ![1580538622231](img/1580538622231.png)
 
-### 	editor与renderer的区别
+### editor与renderer的区别
 
-​		我们可以发现，使用editor可以编辑表格，但是使用renderer也可然表格变为input框，也可以进行编辑，但是不同的使，editor编辑之后，对应的store的数据改变了；但是使用renderer改变的只是显示数据，store里数据没有变化。如果把整个表格的store的数据作为表单提交的话，那么使用renderer编辑的数据还需要做额外的处理，保证store数据同步更新。
+​	我们可以发现，使用editor可以编辑表格，但是使用renderer也可然表格变为input框，也可以进行编辑，但是不同的使，editor编辑之后，对应的store的数据改变了；但是使用renderer改变的只是显示数据，store里数据没有变化。如果把整个表格的store的数据作为表单提交的话，那么使用renderer编辑的数据还需要做额外的处理，保证store数据同步更新。
 
 ## 可勾选表格
 
@@ -275,3 +275,149 @@ Ext.create('Ext.grid.Panel', {
 ![1580540877553](img/1580540877553.png)
 
 ![1580540900790](img/1580540900790.png)
+
+## 特殊表格列
+
+### 跳转链接
+
+[案例代码]: ./demo06.html
+
+​	
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo06</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+    <style>
+        .sex {
+            background: blue;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<script>
+    Ext.create('Ext.grid.Panel', {
+        renderTo: 'container',
+        columns: [
+            {
+                text: '姓名', dataIndex: 'name', renderer: function (val) {
+                    return '<div style="text-decoration:underline; color: #0000EE" onclick="toNameDetail(\'' + val + '\')">' + val + '</div>'
+                    // 不仅设置样式，还设置点击事件
+                }
+            },
+            {
+                text: '性别', dataIndex: 'sex', renderer: function (val) {
+                    return '<div style="text-decoration:underline; color: #0000EE">' + val + '</div>' // 只设置类似于a标签的样式，但具体的点击事件在listeners里设置
+                }
+
+            },
+            {
+                text: '年纪', dataIndex: 'age', renderer: function (val, metaData, record) {
+                    if (record.get('sex') === '男' && record.get('age') > 23) { // 男性且年纪大于23则背景标红
+                        metaData.tdStyle = 'background: blue' // 简单样式写法
+                        // metaData.css = 'sex' // 直接设置css的class
+                    }
+                    return val
+                }
+            }
+        ],
+        store: Ext.create('Ext.data.Store', {
+            data: [
+                {name: '张三', sex: '男', age: '23'},
+                {name: '李四', sex: '男', age: '24'},
+                {name: '小英', sex: '女', age: '25'},
+                {name: '小红', sex: '女', age: '20'},
+            ]
+        }),
+        listeners: {
+            'cellclick': function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) { // 列的点击事件
+                if (cellIndex === 1) { // 第二列
+                    toSexDetail(record.get('sex'))
+                }
+            }
+        }
+    })
+
+    function toNameDetail(val) {
+        Ext.create('Ext.window.Window', {
+            width: 500,
+            height: 500,
+            modal: true, // 当前window弹出来后，其他区域有幕布遮挡
+            title: '详情面板',
+            html: '姓名: ' + val
+        }).show()
+    }
+
+    function toSexDetail(val) {
+        Ext.create('Ext.window.Window', {
+            width: 500,
+            height: 500,
+            modal: true, // 当前window弹出来后，其他区域有幕布遮挡
+            title: '详情面板',
+            html: '性别: ' + val
+        }).show()
+    }
+</script>
+</body>
+</html>
+```
+
+![1580551514434](img/1580551514434.png)
+
+![1580551535002](img/1580551535002.png)
+
+![1580551549947](img/1580551549947.png)
+
+#### 注意事项
+
+​	做列的跳转链接时，需要注意的是，使用renderer虽然是可以构建各种html元素，但是在给事件的方法添加参数时，非常不方便，很多时候还需要转义字符，所以不推荐使用renderer写超链接。
+
+### 可操作列
+
+[案例代码]: ./demo07.html
+
+```javascript
+    Ext.create('Ext.grid.Panel', {
+        width: 500,
+        renderTo: 'container',
+        columns: [
+            {text: '姓名', dataIndex: 'name', flex: 1},
+            {text: '性别', dataIndex: 'sex', flex: 1},
+            {text: '年纪', dataIndex: 'age', flex: 1},
+            {
+                xtype: 'actioncolumn', // action列
+                align: 'center',
+                width: 30,
+                items: [
+                    {
+                        icon: './icons/delete.png',
+                        tooltip: '删除',
+                        handler: function(grid, rowIndex, colIndex, action, e, record) {
+                            Ext.MessageBox.confirm('提示', '你确定删除此行记录吗？', function (val) {
+                                if (val === 'yes') {
+                                    grid.getStore().remove(record)
+                                }
+                            })
+                        }
+                    }
+                ]
+            }
+        ],
+        store: Ext.create('Ext.data.Store', {
+            data: [
+                {name: '张三', sex: '男', age: '23'},
+                {name: '李四', sex: '男', age: '24'},
+                {name: '小红', sex: '女', age: '20'},
+            ]
+        }),
+    })
+
+```
+
+![1580553847915](img/1580553847915.png)

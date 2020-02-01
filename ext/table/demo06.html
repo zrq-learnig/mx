@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo06</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+    <style>
+        .sex {
+            background: blue;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<script>
+    Ext.create('Ext.grid.Panel', {
+        renderTo: 'container',
+        columns: [
+            {
+                text: '姓名', dataIndex: 'name', renderer: function (val) {
+                    return '<div style="text-decoration:underline; color: #0000EE" onclick="toNameDetail(\'' + val + '\')">' + val + '</div>'
+                    // 不仅设置样式，还设置点击事件
+                }
+            },
+            {
+                text: '性别', dataIndex: 'sex', renderer: function (val) {
+                    return '<div style="text-decoration:underline; color: #0000EE">' + val + '</div>' // 只设置类似于a标签的样式，但具体的点击事件在listeners里设置
+                }
+
+            },
+            {
+                text: '年纪', dataIndex: 'age', renderer: function (val, metaData, record) {
+                    if (record.get('sex') === '男' && record.get('age') > 23) { // 男性且年纪大于23则背景标红
+                        metaData.tdStyle = 'background: blue' // 简单样式写法
+                        // metaData.css = 'sex' // 直接设置css的class
+                    }
+                    return val
+                }
+            }
+        ],
+        store: Ext.create('Ext.data.Store', {
+            data: [
+                {name: '张三', sex: '男', age: '23'},
+                {name: '李四', sex: '男', age: '24'},
+                {name: '小英', sex: '女', age: '25'},
+                {name: '小红', sex: '女', age: '20'},
+            ]
+        }),
+        listeners: {
+            'cellclick': function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) { // 列的点击事件
+                if (cellIndex === 1) { // 第二列
+                    toSexDetail(record.get('sex'))
+                }
+            }
+        }
+    })
+
+    function toNameDetail(val) {
+        Ext.create('Ext.window.Window', {
+            width: 500,
+            height: 500,
+            modal: true, // 当前window弹出来后，其他区域有幕布遮挡
+            title: '详情面板',
+            html: '姓名: ' + val
+        }).show()
+    }
+
+    function toSexDetail(val) {
+        Ext.create('Ext.window.Window', {
+            width: 500,
+            height: 500,
+            modal: true, // 当前window弹出来后，其他区域有幕布遮挡
+            title: '详情面板',
+            html: '性别: ' + val
+        }).show()
+    }
+</script>
+</body>
+</html>

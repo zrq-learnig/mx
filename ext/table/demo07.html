@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo07</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+</head>
+<body>
+<div id="container"></div>
+<script>
+    Ext.create('Ext.grid.Panel', {
+        width: 500,
+        renderTo: 'container',
+        columns: [
+            {text: '姓名', dataIndex: 'name', flex: 1},
+            {text: '性别', dataIndex: 'sex', flex: 1},
+            {text: '年纪', dataIndex: 'age', flex: 1},
+            {
+                xtype: 'actioncolumn', // action列
+                align: 'center',
+                width: 30,
+                items: [
+                    {
+                        icon: './icons/delete.png',
+                        tooltip: '删除',
+                        handler: function(grid, rowIndex, colIndex, action, e, record) {
+                            Ext.MessageBox.confirm('提示', '你确定删除此行记录吗？', function (val) {
+                                if (val === 'yes') {
+                                    grid.getStore().remove(record)
+                                }
+                            })
+                        }
+                    }
+                ]
+            }
+        ],
+        store: Ext.create('Ext.data.Store', {
+            data: [
+                {name: '张三', sex: '男', age: '23'},
+                {name: '李四', sex: '男', age: '24'},
+                {name: '小红', sex: '女', age: '20'},
+            ]
+        }),
+    })
+</script>
+</body>
+</html>
