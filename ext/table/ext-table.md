@@ -189,6 +189,10 @@ Ext.create('Ext.grid.Panel', {
 
 ![1580538622231](img/1580538622231.png)
 
+### 	editor与renderer的区别
+
+​		我们可以发现，使用editor可以编辑表格，但是使用renderer也可然表格变为input框，也可以进行编辑，但是不同的使，editor编辑之后，对应的store的数据改变了；但是使用renderer改变的只是显示数据，store里数据没有变化。如果把整个表格的store的数据作为表单提交的话，那么使用renderer编辑的数据还需要做额外的处理，保证store数据同步更新。
+
 ## 可勾选表格
 
 [案例代码]: ./demo04.html
