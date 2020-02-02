@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo01</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <script src="../../resources/jquery/jquery.js"></script>
+    <script src="../../resources/mock/bower_components/mockjs/dist/mock.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+</head>
+<body>
+<div id="container"></div>
+    <script>
+        const baseUrl = 'http://mx' // 基础路径
+        // 使用mock拦截ajax请求模拟后端接口
+        // 由于ext调用接口时，url会带上?_dc，所以此处mock的url使用正则匹配
+        Mock.mock(/http:\/\/mx\/test1/, function (option) {
+            return [
+                {name: '张三', sex: '男', age: '23'},
+                {name: '李四', sex: '男', age: '24'},
+                {name: '小红', sex: '女', age: '20'},
+            ]
+        })
+
+        // 构造一个空的store
+        Ext.create('Ext.data.Store', {
+            storeId: 'tableStoreDemo01', // 给store一个storeId，那么当此store实例化后，可以通过Ext.data.StoreManager.lookup('tableStoreDemo01')获取此对象
+            autoLoad: true // 自动加载数据，对于table来说常常需要自动加载数据
+        });
+        var tableStore = Ext.data.StoreManager.lookup('tableStoreDemo01')
+        Ext.create('Ext.grid.Panel', {
+            renderTo: 'container',
+            columns: [
+                {text: '姓名', dataIndex: 'name'},
+                {text: '性别', dataIndex: 'sex'},
+                {text: '年纪', dataIndex: 'age'}
+            ],
+            store: tableStore
+        })
+
+        // 再通过ajax填充表格数据
+        Ext.Ajax.request({
+            url: baseUrl + '/test1',
+            success: function (response) {
+                var res = JSON.parse(response.responseText)
+                tableStore.loadData(res) // 获取数据后加载到store中
+            }
+        })
+
+    </script>
+
+</body>
+</html>

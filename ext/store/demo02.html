@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo02</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <script src="../../resources/jquery/jquery.js"></script>
+    <script src="../../resources/mock/bower_components/mockjs/dist/mock.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+</head>
+<body>
+<div id="container"></div>
+    <script>
+        Ext.create('Ext.grid.Panel', {
+            renderTo: 'container',
+            width: 500,
+            columns: [
+                {text: '姓名', dataIndex: 'name', flex: 1},
+                {text: '性别', dataIndex: 'sex', flex: 1},
+                {text: '年纪', dataIndex: 'age', flex: 1}
+            ],
+            store: Ext.create('Ext.data.Store', {
+                proxy: {
+                    type: 'ajax',
+                    url: './json/test1.json' // 这里直接写上对应的json文件路径即可
+                },
+                autoLoad: true // 自动加载数据，对于table来说常常需要自动加载数据
+            })
+        })
+
+
+    </script>
+
+</body>
+</html>
