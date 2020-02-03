@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo05</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <script src="../../resources/jquery/jquery.js"></script>
+    <script src="../../resources/mock/bower_components/mockjs/dist/mock.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+</head>
+<body>
+<div id="container"></div>
+<script>
+    const baseUrl = 'http://mx' // 基础路径
+    // 使用mock拦截ajax请求模拟后端接口
+    // 由于ext调用接口时，url会带上?_dc，所以此处mock的url使用正则匹配
+    Mock.mock(/http:\/\/mx\/test1/, function (option) {
+        // 常用的数据格式
+        return {
+            success: true,
+            message: '',
+            data: [
+                {name: '张三', sex: '男', age: '23', id: 1},
+                {name: '李四', sex: '男', age: '24', id: 2},
+                {name: '小红', sex: '女', age: '20', id: 99},
+            ]
+        }
+    })
+
+    Ext.create('Ext.grid.Panel', {
+        id: 'tableGridDemo04',
+        renderTo: 'container',
+        columns: [
+            {text: '姓名', dataIndex: 'name'},
+            {text: '性别', dataIndex: 'sex'},
+            {text: '年纪', dataIndex: 'age'}
+        ],
+        store: Ext.create('Ext.data.Store', {
+            storeId: 'tableStoreDemo04',
+            proxy: {
+                type: 'ajax',
+                url: baseUrl + '/test1',
+                // url: baseUrl + '/test1?' + 'xxx=yyy', 也可以这样传参
+                extraParams: { // 添加额外参数
+                    param1: 'aaa',
+                    param2: 'bbb'
+                },
+                reader: {
+                    // 解析我们需要的数据
+                    // rootProperty: 'data', 写法1
+                    rootProperty: function (data) { // 写法2
+                        return data.data
+                    }
+                },
+                getMethod: function(){ return 'POST' }, // 更改请求方式，默认为get
+            },
+            autoLoad: true // 自动加载数据，对于table来说常常需要自动加载数据
+        })
+    })
+</script>
+
+</body>
+</html>
