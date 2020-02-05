@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo08</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <script src="../../resources/mock/bower_components/mockjs/dist/mock.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+</head>
+<body>
+<div id="container1"></div>
+<div id="container2"></div>
+<script>
+    const baseUrl = 'http://mx' // 基础路径
+    // 使用mock拦截ajax请求模拟后端接口
+    // 由于ext调用接口时，url会带上?_dc，所以此处mock的url使用正则匹配
+    Mock.mock(/http:\/\/mx\/test1/, function (option) {
+        // 常用的数据格式
+        return {
+            success: true,
+            message: '',
+            data: {
+                data: [
+                    {name: '张三', sex: '男', age: '23'},
+                    {name: '李四', sex: '男', age: '24'},
+                    {name: '小红', sex: '女', age: '20'}
+                ],
+                columns: [
+                    {text: '姓名', dataIndex: 'name'},
+                    {text: '性别', dataIndex: 'sex'},
+                    {text: '年纪', dataIndex: 'age'}
+                ]
+            }
+        }
+    })
+
+    Mock.mock(/http:\/\/mx\/test2/, function (option) {
+        // 常用的数据格式
+        return {
+            success: true,
+            message: '',
+            data: {
+                data: [
+                    {name: '张三', age: '23', id: 1},
+                    {name: '李四', age: '24', id: 2},
+                    {name: '小红', age: '20', id: 99}
+                ],
+                columns: [
+                    {text: '姓名', dataIndex: 'name'},
+                    {text: '年纪', dataIndex: 'age'},
+                    {text: 'id', dataIndex: 'id'}
+                ]
+            }
+        }
+    })
+
+    // 第一种方法
+    var containerPanel1 = Ext.create('Ext.panel.Panel', {
+        renderTo: 'container1',
+        items: [],
+        tbar: [
+            {text: '入口1', handler: test1},
+            {text: '入口2', handler: test2}
+        ]
+    })
+
+    function test1() {
+        Ext.Ajax.request({
+            url: baseUrl + '/test1',
+            success: function (res) {
+                updateTable1(res)
+            }
+        })
+    }
+    function test2() {
+        Ext.Ajax.request({
+            url: baseUrl + '/test2',
+            success: function (res) {
+                updateTable1(res)
+            }
+        })
+    }
+
+    function updateTable1(res) {
+        res = JSON.parse(res.responseText)
+        if (res.success) {
+            var table = Ext.create('Ext.grid.Panel', {
+                columns: res.data.columns,
+                store: Ext.create('Ext.data.Store', {
+                    data: res.data.data
+                })
+            })
+            containerPanel1.removeAll() // 先移除
+            containerPanel1.add(table) // 再添加
+        }
+    }
+
+    // 第二种方法
+    var containerPanel2 = Ext.create('Ext.panel.Panel', {
+        renderTo: 'container2',
+        items: [
+            Ext.create('Ext.grid.Panel', {
+                id: 'grid2'
+            })
+        ],
+        tbar: [
+            {text: '入口3', handler: test3},
+            {text: '入口4', handler: test4}
+        ]
+    })
+    
+    function test3() {
+        Ext.Ajax.request({
+            url: baseUrl + '/test1',
+            success: function (res) {
+                updateTable2(res)
+            }
+        })
+    }
+    
+    function test4() {
+        Ext.Ajax.request({
+            url: baseUrl + '/test2',
+            success: function (res) {
+                updateTable2(res)
+            }
+        })
+    }
+
+    function updateTable2(res) {
+        res = JSON.parse(res.responseText)
+        if (res.success) {
+            // reconfigure([store], [columns]) 重置table的store与columns
+            var store = Ext.create('Ext.data.Store', {
+                data: res.data.data
+            })
+            Ext.getCmp('grid2').reconfigure(store, res.data.columns)
+        }
+    }
+</script>
+
+</body>
+</html>

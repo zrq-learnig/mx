@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css基础-变幻</title>
+    <style>
+    /*
+        css变幻指的是页面上的元素样式发生变幻，主要存在以下几种情况，变幻的属性使用transform
+
+        变幻的起点位置属性transform-origin，这个属性标注了变幻的起始位置
+            transform-origin: left top;
+        这个属性不仅可以接受枚举值，还可以接收像素值
+            transform-origin: 200px 0px;
+        如果在变幻的是，想要实现3d效果，就要创建3d空间
+            transform-style: preserve-3d
+            如果想要看到变幻的3d效果，就要添加3d视距离，perspective这个值越大，3d效果约不明显，
+            值越小3d效果越明显
+            在我们平时去设置perspective值的时候，有个小规律，如果是x轴的旋转，则看宽度，如果是y
+            轴的旋转，则看高度
+        注意：上面两个属性都是加在父级上的
+
+        backface-visibility这个属性用于设置当元素发生变幻的时候，如果正面不对着用户，是否隐藏（hidden）与显示（visible）
+            backface-visibility: hidden
+
+        位移
+        位移指的是元素在x轴或者y轴或者z轴进行位置的移动
+        1.translateX() 沿着x轴移动
+        2.translateY() 沿着y轴移动
+        3.translateZ() 沿着z轴移动，但前提条件是开始3d转换效果
+        4.translate(x轴移动,y轴移动)
+        提示：
+            如果在上面的三个方法里输入百分比的单位，这个百分比是以当前元素的大小为百分比的，x轴是以
+        width为百分比，y轴是以height为百分比
+    */
+        div {
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+            background: red;
+        }
+        .div1 {
+            /*
+                让这个div沿着x向右移动50px，向下移动100px
+            */
+            -webkit-transform: translateX(50px) translateY(50px);
+        }
+        .div3 {
+            background: blue;
+            margin: 50px 0 0 50px;
+        }
+
+    /*
+      与margin的区别
+        1.margin会挤压其他的元素，而translate不会
+        2.translate不占用新位置，保留原来的位置
+        =>translate元素之间会重叠，不会影响其他元素位置，margin不会使元素之间重叠，但会影响其他元素的位置
+    */
+
+    /*
+      旋转
+        页面上某一些元素跟随着某一根轴进行旋转
+         1.rotateX() 沿着x轴旋转
+         2.rotateY() 沿着y轴旋转
+         3.rotateZ() 沿着z轴旋转
+         4.rotate3d(参数1，参数2，参数3，参数4) 前三个值都是1或0，分别代表是否要围绕x轴、y轴、z轴旋转，第四个值代表旋转的角度
+    */
+
+    /*
+      缩放
+        缩放的默认值是1，最小值是0
+        1.scaleX() 沿着x轴缩放
+        2.scaleY() 沿着y轴缩放
+        3.scale() 同时沿着x与y去缩放
+    */
+
+    /*
+      变形
+        1.skewX() 沿着x轴实现这个角度的变形
+        2.skewY() 沿着y轴去实现这个角度的变形
+        3.skew() 同时沿着x与y轴进行变形
+    */
+
+    /*
+      多种变幻的结合
+        在css里面，有时候我们需要将一个元素设置为多种情况的变幻，如果我们既希望它放大，还
+      希望它旋转，还希望它位移，当这些变幻同时进行的时候，需要进行多种变幻的结合
+
+      注意：如果一个元素需要设置多个变幻效果，不能同时设置多个transform属性
+      正确语法如下
+        transform: 变幻1 变幻2 变幻3 变幻4 ...
+    */
+    </style>
+</head>
+<body>
+    <div class="div1"></div>
+    <div class="div2"></div>
+    <div class="div3"></div>
+    <div class="div4"></div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css基础-盒子模型</title>
+    <style>
+        div {
+            background-color: blue;
+            width: 100px;
+            height: 100px;
+        }
+        .div1 {
+            /* 让元素在最右边 */
+            margin-left: auto;
+        }
+        .div2 {
+            /* 让元素在最左边 */
+            margin-right: auto;
+        }
+        .div3 {
+            /* 元素居中 */
+            margin-left: auto;
+            margin-right: auto;
+            /* 简化写法 */
+            /*margin: auto;*/
+        }
+
+        /* margin折叠(margin穿透)问题
+            当设置在子级元素的外间距的效果体现在了父级元素上面，这种情况我们就叫margin折叠 */
+        .div4 {
+            width: 400px;
+            height: 400px;
+            background-color: pink;
+        }
+        .div5 {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            margin-left: 50px;
+            margin-top: 50px; /*这一行代码会引发margin的折叠，即这行代码的效果直接体现在父元素上，父子元素上间距还是为0*/
+        }
+        /**
+        解决margin折叠的有以下几种
+            1. 在父级元素上面设置 border-top: 1px solid transparent;box-sizing:border-box
+            2. 在父级元素上面设置 overflow:hidden 这是一个css hack
+         */
+        .div6 {
+            width: 400px;
+            height: 400px;
+            background-color: pink;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        /*
+            box-sizing
+            这个属性是为了解决盒子大小规范得一个属性，这个属性有如下两个常用的值
+            1.content-box（默认设置，没啥用）
+            这个值表示盒子的大小以content为准
+            2.border-box（一般使用这个）
+            这个值表示盒子的大小以content+border为准，即无论border和padding设置多少，盒子的大小固定
+         */
+        .div7 {
+            width: 300px;
+            height: 100px;
+            border: 1px solid black;
+            margin-top: 20px;
+            padding-left: 30px;
+            box-sizing: border-box;
+        }
+
+        /**
+           块级元素：p,table,div
+               1.块级元素独占一行
+               2.块级元素可以通过width/height来设置大小
+               3.块级元素的居中是在当前元素上面添加margin:auto
+               4.块级元素宽度默认是100%，高度默认为0，但是可以通过height来设置，也可以通过里面的内容来撑高
+           行级元素：a,label,span
+               1.默认排列在同一行
+               2.行内元素不能设置width于height
+               3.行内元素如果要实现居中则必须在其外层（父级）块级元素上面设置text-align:center
+                   不能在自己的行内上设置text-align:center
+                   必须是在外层的元素上面
+                   外层元素必须是块级元素
+               4.行内元素默认的宽度与高度都是0，但可以通过里面的内容来进行撑开
+               5.行内元素在代码里面换行以后，会在页面上呈现出一个空格位
+               6.行内元素没有margin-top与margin-bottom，但是有margin-left与margin-right
+               7.padding-left/padding-right是显示有效果，padding-top/padding-bottom在这里也有效果，也可以撑开自身，但是撑不开外边的块级元素
+            行内块级元素
+                在网页里面有些元素既具备块级元素的特点，也具备行内元素的特点，这种元素我们叫行内块级元素（display:inline-block）
+                1.行内块级元素默认排在一行
+                2.代码如果换行页面会产生一个空格位
+                3.行内块级如果需要左右居中采取与行内元素一样的的标准，设置text-align:center
+                4.可以通过width/height来设置元素的宽度与高度
+                5.它的margin与padding遵循标准的盒子模型
+            元素类型的转换
+                display:block 转化为块级元素
+                display:inline 转化为行内元素
+                display:inline-block 转化为行内块级元素
+            各种类型元素之间的包裹效果
+                1.块级可以包含块级，包含行内也可以包含行内块级
+                2.行内里面最好只包含行内
+                3.行内块级元素可以包含块级，可以包含行内块级，还可以包含行内
+                    它的宽度是由里面的内容撑开的，而不是块级的100%
+                块级 > 行内块级 > 行内
+
+         */
+    </style>
+</head>
+<body>
+    <div class="div1"></div>
+    <div class="div2"></div>
+    <div class="div3"></div>
+    <div class="div4">
+        <div class="div5"></div>
+    </div>
+    <div class="div6">
+        <div class="div5"></div>
+    </div>
+    <div class="div7"></div>
+
+
+</body>
+</html>

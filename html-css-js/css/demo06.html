@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css基础-渐变</title>
+    <style>
+        /*
+            css里的渐变指的是背景的渐变，它主要存在两种形式，
+            1.线性渐变
+            2.径向渐变
+        */
+
+        /* 线性渐变 */
+
+        /* 基本线性渐变 */
+        /* 沿着某一条直线进行颜色的改变，使用的css属性为linear-gradient */
+        /*
+            在线性渐变里，它的第一个参数代表的是方向，这个方向可以指一个方向，也可以是两个关键字的结合
+            如左上角to left top，右上角to right top，左下角to left bottom，右下角to right bottom
+            后面接的是颜色值
+        */
+        div {
+            width: 500px;
+            height: 100px;
+            margin: 20px auto;
+        }
+
+        /* 标准写法 */
+        /*background: linear-gradient(to 方向,颜色1，颜色2，颜色3);*/
+        /* 兼容写法 */
+        /*background: -webkit-linear-gradient(right,颜色1,颜色2,颜色3);*/
+        /*
+            在兼容语法里面，有两点需要特别注意
+            1.添加各种浏览器特定的前缀-webkit-，-moz-等
+            2.在方向前面去掉to关键字，颜色反着来
+        */
+        /* 设置渐变色的尺寸 */
+        /*  当我们在设置渐变的时候，可以在某一个特殊颜色上面设置它的间距，这个间距叫渐变色的颜色尺寸 */
+        .div1 {
+            /*
+            在下面代码里，我们可以看到0%到50%为蓝色，50%到70%为黄色，70%到100%为红色和橙色
+            */
+            background: linear-gradient(to right, blue 50%, yellow 70%, red,orange 100%);
+        }
+
+        /* 角度线性渐变 */
+        .div2 {
+            /*
+            在第一个参数上面，我们已经不需要再写具体的方法了，转而可以使用一个角度来代替
+            */
+            background: linear-gradient(0deg, red, blue);
+        }
+        /*
+            0deg代表上边
+            90deg代表右边
+            180deg代表下边
+            270deg代表左边
+            角度线性渐变就可以弥补我们之前在基本的线性渐变方向单一的问题，它可以通过角度直接指定一个方向
+        */
+
+        /* 渐变与图片结合使用 */
+        .div3 {
+            width: 600px;
+            height: 449px;
+            border: 1px solid black;
+            background: linear-gradient(to right bottom, rgba(255, 0, 0, 0.5), rgba(0, 0, 255, 0.1)), url(image/2/1.jpg);
+        }
+
+        /* 重复的线性渐变 */
+        .div4 {
+            background: repeating-linear-gradient(to right, orange 5%, red 10%);
+        }
+
+        /* 径向渐变 */
+        /*
+           径向渐变指的是由内向外的一种扩散渐变方式，使用的属性名是radial-gradient
+           background: radial-gradient(可选参数,颜色1,颜色2);
+           可选参数是ellipse椭圆或者circle圆
+        */
+        /*
+           当我们在设置径向渐变的时候，如果这个元素它不是正方形，那么径向渐变默认会变成一个椭圆，
+           如果这时候还想设置成园，那么，我就添加第一个参数为circle
+        */
+        .div5 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, red, blue);
+        }
+        /* 径向渐变与线性渐变很相似，它可以设置百分比的值，也可以设置多个颜色值 */
+
+        /* 重复的径向渐变 */
+        .div6 {
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            border: 1px solid black;
+            background: repeating-radial-gradient(red 10%, blue 20%);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="div1"></div>
+    <div class="div2"></div>
+    <div class="div3"></div>
+    <div class="div4"></div>
+    <div class="div5"></div>
+    <div class="div6"></div>
+</body>
+</html>

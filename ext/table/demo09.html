@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo08</title>
+    <script src="../../resources/ext/extjs6/ext-all.js"></script>
+    <script src="../../resources/ext/extjs6/classic/locale/locale-zh_CN.js"></script>
+    <script src="../../resources/mock/bower_components/mockjs/dist/mock.js"></script>
+    <link href="../../resources/ext/extjs6/classic/theme-gray/resources/theme-gray-all.css" rel="stylesheet" />
+</head>
+<body>
+<div id="container"></div>
+<script>
+    const baseUrl = 'http://mx' // 基础路径
+    // 使用mock拦截ajax请求模拟后端接口
+    // 由于ext调用接口时，url会带上?_dc，所以此处mock的url使用正则匹配
+    Mock.mock(/http:\/\/mx\/getEx/, function (option) {
+        var id = option.body.split('=')[1]
+        if (id === '1') {
+            return [
+                {name: '小红', age: '24', 'beauty': '60'},
+                {name: '小花', age: '21', 'beauty': '70'},
+            ]
+        } else if (id === '2') {
+            return [
+                {name: '小美', age: '27', beauty: '80'}
+            ]
+        } else if (id === '3') {
+            return [
+                {name: '小青', age: '18', beauty: '50'},
+                {name: '小雪', age: '20', beauty: '90'},
+                {name: '小月', age: '23', beauty: '80'}
+            ]
+        }
+    })
+
+    Ext.create('Ext.grid.Panel', {
+        width: 500,
+        height: 500,
+        renderTo: 'container',
+        columns: [
+            {text: '姓名', dataIndex: 'name', flex: 1, align: 'center', renderer: function (val, meta, record) {
+                    meta.tdStyle = 'text-decoration:underline; color: #0000EE' // 给此单元格一个a标签的样式
+                    return val
+                }
+            },
+            {text: '性别', dataIndex: 'sex', flex: 1, align: 'center'},
+            {text: '年纪', dataIndex: 'age', flex: 1, align: 'center'}
+        ],
+        store: Ext.create('Ext.data.Store', {
+            data: [
+                {name: '张三', sex: '男', age: '23', id: '1'},
+                {name: '李四', sex: '男', age: '24', id: '2'},
+                {name: '王五', sex: '女', age: '20', id: '3'}
+            ],
+        }),
+        listeners: {
+            'cellclick': function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) { // 列的点击事件
+                if (cellIndex === 0) { // 第一列
+                    Ext.Ajax.request({
+                        url: baseUrl + '/getEx',
+                        params: {
+                            id: record.get('id')
+                        },
+                        success: function (res) {
+                            showEx() // 弹出面板
+                            res = JSON.parse(res.responseText)
+                            var exStore = Ext.data.StoreManager.lookup('exStore')
+                            exStore.loadData(res, false) // 清空并添加数据
+
+                        }
+                    })
+                }
+            }
+        }
+    })
+
+    function showEx() {
+        Ext.create('Ext.window.Window', {
+            width: 500,
+            height: 500,
+            modal: true, // 当前window弹出来后，其他区域有幕布遮挡
+            items: [
+                Ext.create('Ext.grid.Panel', {
+                    title: '前女友列表',
+                    columns: [
+                        {text: '姓名', dataIndex: 'name', flex: 1, align: 'center'},
+                        {text: '年纪', dataIndex: 'age', flex: 1, align: 'center'},
+                        {text: '颜值', dataIndex: 'beauty', flex: 1, align: 'center'},
+                    ],
+                    store: Ext.create('Ext.data.Store', {
+                        storeId: 'exStore',
+                    })
+                })
+            ]
+        }).show()
+    }
+
+</script>
+
+</body>
+</html>

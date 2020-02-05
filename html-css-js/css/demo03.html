@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css基础-css特性</title>
+    <style>
+        /**
+        引入css的方式，都是写在style标签里
+        1.
+            <link rel="stylesheet" type="text/css" href="css/index.css" />
+        2.
+            @import "css/index.css";    或   
+            @import url("css/index.css");
+         */
+
+        /**
+        css特性
+          基本特性：
+            1.统一性
+            2.便捷性
+            3.分离性
+          高级特性：
+            1.继承性
+                css的继承性指的是子元素可以继承一些父元素琐使用的css样式（当对一个父元素设置一个css样式的时候，子元素也有可能产生影响
+                注意：不是所有的样式都可以被继承
+                    1.display
+                    2.width/height
+                    3.float
+                    4.margin/padding
+                通常情况下，能够被继承的
+                    1.color
+                    2.text-align
+                    3.line-height
+                    4.font-size/font-family
+            2.层叠性
+                自定义 > 标签自带默认样式 > 继承
+            3.优先级
+                *和伪类和伪元素       0
+                标签选择器            1
+                class选择器          10
+                id选择器             100
+                行内style样式        1000
+                !important          10000
+         */
+
+        .div1 {
+            color: red;
+            height: 100px;
+            border: 1px solid red;
+            background-color: pink;
+            text-align: center;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="div1">
+        我是父亲
+        <p>我是儿子</p>
+    </div>
+
+</body>
+</html>

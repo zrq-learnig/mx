@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css基础-动画</title>
+    <style>
+    /*
+        1.动画的定义
+        语法格式：@keyframes + 动画名
+    */
+
+        @keyframes a1 {
+            /*from代表动画开始的时候，to代表动画结束的时候*/
+            from {
+                -webkit-transform: rotateZ(0deg);
+            }
+            to {
+                -webkit-transform: rotateZ(360deg);
+            }
+        }
+        @keyframes a2 {
+            /*动画在定义的时候除了通过from与to来表示动画的开始与结束状态以外，还可以通过百分比来表示动画进度*/
+            0% {
+                transform: rotateZ(0deg);
+            }
+            20% {
+                transform: rotateZ(300deg);
+            }
+            100% {
+                transform: rotateZ(360deg);
+            }
+        }
+        @keyframes a3 {
+            /*这种写法表明动画在0%和20%的时候它的状态是一样的*/
+            0%,20% {
+                transform: rotateZ(0deg);
+            }
+            21%,40% {
+                transform: rotateZ(45deg);
+            }
+            100% {
+                transform: rotateZ(360deg);
+            }
+        }
+    /*
+        1.animation-name 代表动画的名称
+        2.animation-duration 代表动画执行一次所需要的时间
+        3.animation-iteration-count 动画重复的次数，后面接一个数字代表执行次数，如果需要动画一直运行，则使用infinite，这个值代表无穷大，且为默认值
+        4.animation-timing-function 动画执行的效果，linear代表匀速，ease为默认值
+        5.animation-delay 动画的延迟执行时间，默认值为0
+        6.animation-play-state 动画的播放状态，running代表运行状态，为默认值，paused代表暂停状态
+        7.animation-fill-mode 动画在结束的时候保留在什么状态，forwards代表结束状态，backwards代表开始状态，为默认值
+        8.animation-direction 规定动画播放的方向
+            reverse 反向运行
+            normal 代表正常运行【默认值】
+            alternate 正反方向交替运行
+            alternate-reverse 反向与正向交替运行
+        提示：
+            上面的8个属性名还可以简写成一个属性名 animation 就可以了
+            选择器 {    
+                animation:动画名 【执行一次所需时间】 【等待时间】  【执行次数】 【播放状态】 【播放方向】 【结 束状态】
+            }
+            注意：
+                上面除执行一次所需时间外，其他没有顺序限制
+    */
+
+        /*轮播图*/
+        .div1 {
+            width: 600px;
+            height: 337px;
+            border: 5px solid blue;
+            overflow: hidden;
+        }
+        .clearfix ::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .imgBox {
+            width: 3000px;
+            height: 337px;
+            border: 1px solid white;
+            animation: b 10s infinite;
+        }
+        .imgBox>img {
+            float: left;
+        }
+        @keyframes b {
+            0%,15% {
+                transform: translate(0px);
+            }
+            20%,35% {
+                transform: translate(-600px);
+            }
+            40%,55% {
+                transform: translate(-1200px);
+            }
+            60%,75% {
+                transform: translate(-1800px);
+            }
+            80%,100% {
+                transform: translate(-2400px);
+            }
+        }
+        .div1:hover>.imgBox {
+            animation-play-state: paused;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="imgBox clearfix">
+            <img src="image/1/1.jpg">
+            <img src="image/1/2.jpg">
+            <img src="image/1/3.jpg">
+            <img src="image/1/4.jpg">
+            <img src="image/1/1.jpg">
+        </div>
+    </div>
+</body>
+</html>

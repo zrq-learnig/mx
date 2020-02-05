@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css基础-选择器</title>
+    <style>
+        /*选择器
+            1.id选择器
+            2.class类选择器
+            3.分组选择器
+                如果我们期望p标签，id为div1，h2里的内容背景颜色为黄色，则可以使用以下写法
+                p,#div1,h2 {    background-color: yellow; }
+            4.后代选择器（孙子选择器）
+                div a {}
+            5.子代选择器（一级子元素选择器）
+                div>a
+            6.相邻兄弟选择器
+                ul>li+li+li+li {   color: red;   }
+            7.普通兄弟选择器
+                div>p~div {   color: red;   }
+            8.属性选择器
+                [type="text"] {}
+                属性选择器的高级用法
+                1.^代表开始匹配
+                    [src^="image/"] {}
+                2.$代表结束匹配
+                    [src$=".png"] {}
+                3.*代表任意位置匹配
+                    [src*="item"] {}
+            9.伪元素与伪类选择器
+                1. :hover 鼠标移动上去以后的效果
+                2. :link 用于设置a标签点击以前的效果
+                3. :active 用于设置a标签点击的时候的效果
+                4. :visited 用于设置a标签链接访问以后的效果
+                5. :first-child 选取第一个子元素
+                6. :last-child 选取最后一个子元素
+                7. :nth-child(n) 代表选取第n个子元素
+                    1.nth-child(even)代表选取偶数的子元素
+                    2.nth-child(odd)代表选取奇数的子元素
+                    3.nth-child(xn+y)分组选择功能，选每x分一个组，再取这个组里面的第y项
+                    4.nth-child(-n+x)选择前x项的子元素
+                    5.nth-child(n+y)排除前面的y-1面，这个演变自xn+y这种方式
+                  注意：h2:nth-child(n)先找第n个元素，再去判断一下第n个元素是不是h2元素，如果是则选择器成立
+                8. :nth-of-type(n) 这个选择器与 nth-child 用法差不多，唯一不同的地方就是它先找元素，再去判断个数
+                  经验：如果子元素是同一个类型，可以优先使用 nth-child ，如果子元素是不同的类型 ，我们优先使用 nth-of-type
+                9. :first-line 选取段落文字的第一行
+                10. :first-letter 选取第一个文字
+                11. ::selection 它是选取以后的文字
+                12. :not() 排除，取反
+                13. :checked 代表单选按钮或多选按钮被选中的元素
+                14. :focus 输入框获取焦点以后
+                15. ::placeholder 用于设置输入框里面的提示信息的
+                16. :read-only 用于设置只读的表单元素
+                17. :disabled 用于表单当中被禁用的元素
+                18. :target 指代网页当中某一个元素被a标签触发以后的效果
+                19. ::after 该伪元素会在当前元素里面的最后面去插入 content 里面的内容
+                20. ::before 该伪元素会在当前元素里面的最前面去插入 content 里面的内容
+
+
+        */
+        /*相邻兄弟选择器*/
+        div>p+h2 {
+            color: red;
+        }
+        /*小技术：我们经常在开发过程当中，通过相邻兄弟选择器去排除前几项*/
+        /* 排除ul下面前三项li */
+        ul>li+li+li+li {
+            /*color: red;*/
+        }
+
+        /*普通兄弟选择器*/
+        div>p~div {
+            color: red;
+        }
+
+        /*属性选择器*/
+        [type="text"] {
+            width: 300px;
+            border-color: blue;
+        }
+
+        /*伪元素选择器*/
+        .nnn ul li:nth-child(2n + 1) {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p>床前明月光</p>
+        <h1>海上月是天上月</h1>
+        <h2>兴百姓苦</h2>
+        <p>眼前人是心上人</p>
+        <h2> 恨不相逢未嫁时</h2>
+        <h2>似曾相识燕归来</h2>
+    </div>
+    <ul>
+        <li>第一项</li>
+        <li>第二项</li>
+        <li>第三项</li>
+        <li>第四项</li>
+        <li>第五项</li>
+        <li>第六项</li>
+        <li>第七项</li>
+    </ul>
+    <div>
+        <div>1111</div>
+        <p>2222</p>
+        <div>3333</div>
+        <p>4444</p>
+        <div>5555</div>
+        <div>6666</div>
+    </div>
+    <div>
+        姓名<input type="text" />      <br />  
+        密码<input type="password" />     <br />  
+        昵称<input type="text" />         <br />  
+        地址<input type="text"/>          <br />  
+        年龄<input type="number" />       <br />
+    </div>
+    <div class="nnn">
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+
+
+</body>
+</html>
