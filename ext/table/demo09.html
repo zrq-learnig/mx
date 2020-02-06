@@ -18,18 +18,18 @@
         var id = option.body.split('=')[1]
         if (id === '1') {
             return [
-                {name: '小红', age: '24', 'beauty': '60'},
-                {name: '小花', age: '21', 'beauty': '70'},
+                {item: '篮球', grade: '70'},
+                {item: '足球', grade: '60'},
+                {item: '吉他', grade: '40'}
             ]
         } else if (id === '2') {
             return [
-                {name: '小美', age: '27', beauty: '80'}
+                {item: '篮球', grade: '80'},
             ]
         } else if (id === '3') {
             return [
-                {name: '小青', age: '18', beauty: '50'},
-                {name: '小雪', age: '20', beauty: '90'},
-                {name: '小月', age: '23', beauty: '80'}
+                {item: '游戏', grade: '90'},
+                {item: '跑步', grade: '50'}
             ]
         }
     })
@@ -82,11 +82,10 @@
             modal: true, // 当前window弹出来后，其他区域有幕布遮挡
             items: [
                 Ext.create('Ext.grid.Panel', {
-                    title: '前女友列表',
+                    title: '个人兴趣列表',
                     columns: [
-                        {text: '姓名', dataIndex: 'name', flex: 1, align: 'center'},
-                        {text: '年纪', dataIndex: 'age', flex: 1, align: 'center'},
-                        {text: '颜值', dataIndex: 'beauty', flex: 1, align: 'center'},
+                        {text: '兴趣项', dataIndex: 'item', flex: 1, align: 'center'},
+                        {text: '兴趣值', dataIndex: 'grade', flex: 1, align: 'center'},
                     ],
                     store: Ext.create('Ext.data.Store', {
                         storeId: 'exStore',
